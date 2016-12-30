@@ -1,0 +1,36 @@
+---
+
+- name: install specific mariadb server version
+  apt:
+    pkg: 'mariadb-server={{ mariadb_server_pkg_version }}'
+    state: installed
+    update_cache: yes
+    cache_valid_time: 3600
+  when: mariadb_server_install and mariadb_server_pkg_version
+
+- name: install current/latest mariadb server version
+  apt:
+    pkg: '{{ item }}'
+    state: '{{ mariadb_server_pkg_state }}'
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - mariadb-server
+    - python-mysqldb
+  when: mariadb_server_install and not mariadb_server_pkg_version
+
+- name: install specific mariadb client version
+  apt:
+    pkg: 'mariadb_client={{ mariadb_client_pkg_version }}'
+    state: installed
+    update_cache: yes
+    cache_valid_time: 3600
+  when: mariadb_client_install and mariadb_client_pkg_version
+
+- name: install current/latest mariadb client version
+  apt:
+    pkg: mariadb-client
+    state: '{{ mariadb_client_pkg_state }}'
+    update_cache: yes
+    cache_valid_time: 3600
+  when: mariadb_client_install and not mariadb_client_pkg_version

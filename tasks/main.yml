@@ -1,0 +1,22 @@
+---
+
+- include: package.yml
+  tags: package
+
+- include: configuration.yml
+  when: mariadb_server_install
+  tags: configuration
+
+- include: replication.yml
+  when: mariadb_role is defined
+  tags:
+    - configuration
+    - replication
+
+- name: start/stop mariadb service
+  service:
+    name: mysql
+    state: '{{ mariadb_service_state }}'
+    enabled: '{{ mariadb_service_enabled }}'
+  when: mariadb_server_install
+  tags: service

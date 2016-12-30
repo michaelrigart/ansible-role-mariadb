@@ -1,0 +1,7 @@
+{% for section, config in mariadb_config.iteritems() %}
+[{{ section }}]
+{% for value in config %}
+{{ value }}
+{% endfor %}
+
+{% endfor %}
